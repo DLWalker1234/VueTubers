@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.SearchBar {
+    padding: 2%;
+    grid-area: SearchBar;
+}
+
+.VideoList {
+    grid-area: VideoList;
+}
+
+.VideoDetail {
+    grid-area: VideoDetail;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "SearchBar SearchBar SearchBar SearchBar"
+                         "VideoDetail VideoDetail VideoDetail VideoList"
+                         "VideoDetail VideoDetail VideoDetail VideoList"
+                         "VideoDetail VideoDetail VideoDetail VideoList"
+                        
+}
+

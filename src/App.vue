@@ -1,28 +1,57 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div class="main">
+        <SearchBar class="SearchBar" v-on:newSearch="onNewSearch"></SearchBar>
+        <VideoDetail v-bind:video="selectedVideo" class="VideoDetail" ></VideoDetail>
+        <VideoList class="VideoList" v-on:videoSelect="onVideoSelect" v-bind:videos="videos" ></VideoList>
+    </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script> 
+
+import axios from 'axios';
+import SearchBar from './components/SearchBar';
+import VideoList from './components/VideoList';
+import VideoDetail from './components/VideoDetail';
+
+const API_KEY = 'AIzaSyDlBEi0I4BRiANflvUnCKHbr9khDO6cOqk';
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    name: 'App',
+    components: {
+        SearchBar,
+        VideoList,
+        VideoDetail
+        
+    },
+    data: function() {
+        return {
+            videos: [],
+            selectedVideo: null
+        };
+    },
+    methods: {
+        onNewSearch: function(newSearch) {
+            console.log(newSearch);
+            axios.get('https://www.googleapis.com/youtube/v3/search', {
+                params: {
+                    key: API_KEY,
+                    type: 'video',
+                    part: 'snippet',
+                    q: newSearch
+
+                }
+            }).then(response => {
+                console.log(response.data.items);
+                this.videos = response.data.items;
+            });
+        },
+        onVideoSelect: function(video) {
+            this.selectedVideo = video;
+        }
+    }
+};
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss" scoped>
+  @import 'main.scss'
 </style>
